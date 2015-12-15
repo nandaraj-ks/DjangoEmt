@@ -1,0 +1,44 @@
+<!-- Author : @mamun0024 & Rejoan -->
+{% load compress %}
+{% load staticfiles %}
+
+{% compress css %}
+
+
+<script type="text/javascript" src="{% static 'lib/angular/angular.js' %}"></script>
+<script type="text/javascript" src="{% static 'lib/angular-cookies/angular-cookies.js' %}"></script>
+<script type="text/javascript" src="{% static 'lib/angular-route/angular-route.js' %}"></script>
+<script type="text/javascript" src="{% static 'lib/ngDialog/js/ngDialog.js' %}"></script>
+
+
+<script type="text/javascript" src="{% static 'angular/djangoUser.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/djangoUser.config.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/djangoUser.routes.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/users/users.module.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/users/services/users.service.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/users/controllers/userList.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/users/controllers/userAdd.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/users/controllers/userEdit.controller.js' %}"></script>
+<script type="text/javascript" src="{% static 'angular/users/controllers/userDelete.controller.js' %}"></script>
+
+<!-- jQuery (Date Time Picker) -->
+<script type="text/javascript" src="{% static 'lib/date_time_picker/jquery.datetimepicker.js' %}"></script>
+
+<!-- Fade Notification Library - Start -->
+<script src="{% static 'lib/fade_notification/toastr.min.js' %}"></script>
+<link href="{% static 'lib/fade_notification/toastr.css' %}" rel="stylesheet">
+<!-- Fade Notification Library - End -->
+
+<!-- jQuery (Table) -->
+<script type="text/javascript" src="{% static 'lib/table/jquery.tablesorter.js' %}"></script>
+
+<!-- Tooltip (jQuery) -->
+<script type="text/javascript" src="{% static 'lib/tooltipster/jquery.tooltipster.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/myScript.js' %}"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+<script type="text/javascript" src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script type="text/javascript" src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+{% endcompress %}

@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+{% block content %}
+{% include 'project/project_header.html' %}
+<div class="p_up">
+        <div class="p_up_left">
+            <h1>{{ user.username }}</h1>
+            <p>
+                {% if current_user_type.member_type == 1 %}
+                    Project Lead
+                {% else %}
+                    Project Member
+                {% endif %}
+            </p>
+        </div>
+        <div class="p_up_right">
+            <p>Project Creation Date : {{project.create_date}}</p>
+            <div class="clear"></div>
+            <p>Estimated Project Deadline : {{project.deadline}}</p>
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="p_middle">
+        <div class="p_middle_left">
+            <h1>Team Members</h1>
+            <div id="lead_member">
+                <p id="lead">Lead Members</p>
+                {% for lead in leaders %}
+                  <p>{{lead.username}}</p>
+                {% endfor %}
+            </div>
+            <div id="general_member">
+                <p id="general">General Members</p>
+                {% for member in members %}
+                  <p>{{member.username}}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="p_middle_right">
+            <h1>
+                <span>Project Stream</span>
+            </h1>
+            <div class="clear"></div>
+            <div id="project_stream">
+              {% for d in latest_three %}
+                <div class="stream_details">
+                      <p>{{d.create_date}}</p>
+                    {% for cm in comments %}
+                        {% if d.create_date == cm.create_date|date:'d-m-Y' %}
+                            <a href="{% url 'project:ticket_details' project_id cm.ticket_id %}">
+                                <div class="stream_data">
+                                    <div class="stream_time">{{cm.create_date|date:'h:i'}}</div>
+                                    <div class="stream_status_m">
+                                        <div class="stream_status">
+                                            <span>{{cm.username}}</span> - updated
+                                            <span>{{cm.t_title}}</span>
+                                        </div>
+                                        {% if cm.prev_status and cm.prev_status.strip %}
+                                        <div class="stream_status_change">
+                                            <span>Status</span> changed from <span>{{cm.prev_status}}</span> to <span>{{cm.curr_status}}</span>
+                                        </div>
+                                        {% endif %}
+                                        <div class="stream_comment">
+                                            commented - <span>"{{cm.details}}"</span>
+                                        </div>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+ {% include 'project/project_footer.html' %}
+ {% endblock %}

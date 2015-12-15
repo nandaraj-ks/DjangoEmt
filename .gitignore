@@ -1,0 +1,5 @@
+.idea
+*.pyc
+authentication/migrations/*
+project/migrations/*
+static/uploads/*

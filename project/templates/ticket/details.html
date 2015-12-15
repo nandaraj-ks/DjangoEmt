@@ -1,0 +1,192 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+{% block content %}
+  <style>
+       input[type="file"]{
+           margin: 2px 0 5px 0;
+           padding: 2px;
+       }
+   </style>
+   {% include 'project/project_header.html' %}
+   <div class="p_up">
+       {% if messages %}
+         {% for message in messages %}
+             <p class="alert alert-info">{{ message }}</p>
+         {% endfor %}
+       {% endif %}
+       <div class="p_up_left">
+           <h1 class="inline"><img src='{% static "img/ticket_ID_big.png" %}' alt="Ticket ID" title="Ticket ID"><span title="Ticket ID">#{{tickets.0.id}}</span> Details</h1>
+       </div>
+       <div class="p_up_right">
+           <p>Project Creation Date : {{tickets.0.p_create_date}} </p>
+           <div class="clear"></div>
+           <p>Estimated Project Deadline :  {{tickets.0.p_deadline}} </p>
+           <div class="clear"></div>
+       </div>
+       <div class="clear"></div>
+   </div>
+   <div class="p_middle">
+       <div id="milestone_add_body">
+           <div class="p_form_left">
+               <div class="p-10">
+                   <div class="p_left_fields">
+                       <ul>
+                           <li>
+                               <div class="level">Created on:</div>
+                               <div class="fields">
+                                   <span class="fields_value">{{tickets.0.create_date}}</span>
+                               </div>
+                           </li>
+                           <li>
+                               <div class="level">Reported by :</div>
+                               <div class="fields">
+                                   <span id="report_by">{{tickets.0.ticket_creator}}</span>
+                               </div>
+                           </li>
+                           <li>
+                               <div class="level">Status :</div>
+                               <div class="fields">
+                                   <span class="fields_value">{{tickets.0.status}}</span>
+                               </div>
+                           </li>
+                           <li>
+                               <div class="level">Priority :</div>
+                               <div class="fields">
+                                   <span class="fields_value">
+                                     {% if tickets.0.priority == 1 %}
+                                         Highest (1)
+                                     {% elif tickets.0.priority == 2 %}
+                                         High (2)
+                                     {% elif tickets.0.priority == 3 %}
+                                         Normal (3)
+                                     {% elif tickets.0.priority == 4 %}
+                                         Low (4)
+                                     {% else %}
+                                         Lowest (5)
+                                     {% endif %}
+                                   </span>
+                               </div>
+                           </li>
+                           <li>
+                               <div class="level">Assigned to :</div>
+                               <div class="fields">
+                                   <span class="fields_value">{{tickets.0.username}}</span>
+                               </div>
+                           </li>
+                           <li>
+                               <div class="level">Milestone :</div>
+                               <div class="fields">
+                                    <span class="fields_value">{{tickets.0.m_title}}</span>
+                               </div>
+                           </li>
+                           <li>
+                               <div class="level">Estimate :</div>
+                               <div class="fields">
+                                   <span class="fields_value">
+                                     {% if tickets.0.estimate == "Small" %}
+                                         <img class='estimate_t' src='{% static "img/estimate_small.png" %}'> Small
+                                     {% elif tickets.0.estimate == "Medium" %}
+                                         <img class='estimate_t' src='{% static "img/estimate_medium.png" %}'> Medium
+                                     {% elif tickets.0.estimate == "Large" %}
+                                         <img class='estimate_t' src='{% static "img/estimate_large.png" %}'> Large
+                                     {% else %}
+                                         <img class='estimate_t' src='{% static "img/estimate_none.png" %}'> None
+                                     {% endif %}
+                                   </span>
+                               </div>
+                           </li>
+                       </ul>
+                   </div>
+               </div>
+               <div class="p-10" style="padding-top: 0;">
+                   <div class="p_left_fields" style="background-color: #FAFAFA;">
+                       <div class="files_level">Ticket File's </div>
+                       <ul class="files_ul">
+                         {% for f in ticket_files %}
+                           <li>
+                               <a target="_blank" href="/static/uploads/{{f.file_name}}">{{f.file_name}}</a>
+                           </li>
+                         {% endfor %}
+                       </ul>
+                   </div>
+               </div>
+           </div>
+           <div class="p_form_right">
+               <div class="m_title">
+                   <span>{{tickets.0.title}}</span>
+               </div>
+               <div class="ticket_desc">
+                       <span>{{tickets.0.description}}</span>
+                   </div>
+
+               <div class="ticket_blocks">
+                 {% for c in comments %}
+                   <div class="ticket_creator">
+                     <div class="ticket_creator_header">
+                         <div class="t_c_upper">
+                             <p>By <span>{{c.username}}</span></p>
+                             <p>on {{c.create_date}}</p>
+                             <div class="clear"></div>
+                         </div>
+                         {% if c.curr_status and c.curr_status.strip %}
+                         <div class="t_c_middle">
+                             <p><span>Status</span> changed from <span>{{c.prev_status}}</span> to <span>{{c.curr_status}}</span></p>
+                         </div>
+                         {% endif %}
+                       </div>
+                       {% if c.details and c.details.strip %}
+                       <div class="t_c_desc">{{c.details}}</div>
+                        {% endif %}
+                     </div>
+                    {% endfor %}
+                   <form action="" enctype="multipart/form-data" method="POST" name="ticket_details" >
+                     {% csrf_token %}
+                       <textarea name="comment_desc" id="comment_area" placeholder="Leave a comment"></textarea>
+                       <div id="ticket_details_form" style="width: 50%; float: left;">
+                           <div class="ticket_level">File's </div>
+                           <input style="width: 80%;" type="file" name="ticket_file">
+                           <div id="add_files"></div>
+                           <div class="add_another" id="add_another_if1">
+                               <a>
+                                   <img src='{% static "img/i_add.png" %}' alt="Add Another File" style="margin-left: 0;" title="Add Another File">
+                                   <p>Add Another File</p>
+                               </a>
+                           </div>
+                           <input type="submit" style="margin-top: 25px;" name="submit_ticket_details" value="Submit">
+                           <div class="clear"></div>
+                       </div>
+                       <div style="width: 50%; float: right;">
+                           <div class="ticket_level">Status </div>
+                           <div class="fields">
+                               <span id="details_status"><span> to
+                               <select class="p_selection selection" name="t_status">
+                                   <optgroup label="In progress">
+                                       <option value="">Select Status</option>
+                                       <option value="New">New</option>
+
+                                       <option value="Accepted">Accepted</option>
+                                       <option value="Test">Test</option>
+
+                                   </optgroup>
+                                   <optgroup label="Closed">
+                                       <option value="Fixed">Fixed</option>
+                                       <option value="Invalid">Invalid</option>
+                                   </optgroup>
+                               </select>
+                           </div>
+                       </div>
+                       <div class="clear"></div>
+                   </form>
+               </div>
+           </div>
+           <div class="clear"></div>
+       </div>
+   </div>
+
+   {% include 'project/project_footer.html' %}
+   <script>
+       $("#add_another_i").click(function(){
+           $("#add_files").append('<input style="width: 80%;" type="file" name="t_files">');
+       });
+   </script>
+ {% endblock %}
